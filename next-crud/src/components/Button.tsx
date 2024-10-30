@@ -1,13 +1,12 @@
-
-
 import React from "react";
 
 interface ButtonProps {
   color?: "green" | "blue" | "grey";
   children: React.ReactNode;
+  onClick?: () => void;
 }
 
-const Button = ({ color = "blue", children }: ButtonProps) => {
+const Button = ({ color = "blue", children, onClick }: ButtonProps) => {
   const colorClasses = {
     green:
       "from-green-400 to-green-600 hover:from-green-500 hover:to-green-700",
@@ -17,6 +16,7 @@ const Button = ({ color = "blue", children }: ButtonProps) => {
 
   return (
     <button
+      onClick={onClick}
       className={`bg-gradient-to-r ${colorClasses[color]} text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-${color}-500`}
     >
       {children}

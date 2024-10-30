@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import Layout from "@/components/Layout";
 import Table from "@/components/Table";
 import Client from "@/core/Clients";
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <div className={`flex h-screen justify-center items-center`}>
       <Layout title="Cadastro">
+        <Button>Adicionar</Button>
         <Table
           clients={clients}
           SelectedClient={SelectedClient}

@@ -10,10 +10,22 @@ export default function Home() {
     new Client("natan", 30, "4"),
   ];
 
+  const SelectedClient = (client: Client) => {
+    console.log(client.getName);
+  };
+
+  const DeletedClient = (client: Client) => {
+    console.log(client.getName);
+  };
+
   return (
     <div className={`flex h-screen justify-center items-center`}>
       <Layout title="Cadastro">
-        <Table clients={clients}></Table>
+        <Table
+          clients={clients}
+          SelectedClient={SelectedClient}
+          DeletedClient={DeletedClient}
+        ></Table>
       </Layout>
     </div>
   );

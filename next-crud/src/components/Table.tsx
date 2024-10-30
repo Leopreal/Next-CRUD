@@ -4,9 +4,13 @@ import { DeleteIcon, EditIcon } from "./Icons";
 
 interface TableProps {
   clients: Client[];
+  SelectedClient?: (client: Client) => void;
+  DeletedClient?: (client: Client) => void;
 }
 
 const Table = (props: TableProps) => {
+  const ShowActions = props.DeletedClient || props.SelectedClient;
+
   const renderHeader = () => {
     return (
       <thead className="bg-blue-500 text-white">
@@ -14,7 +18,7 @@ const Table = (props: TableProps) => {
           <th className="px-6 py-4 text-left text-sm font-medium">Código</th>
           <th className="px-6 py-4 text-left text-sm font-medium">Nome</th>
           <th className="px-6 py-4 text-left text-sm font-medium">Idade</th>
-          <th className="p-4">Ações</th>
+          {ShowActions ? <th className="p-4">Ações</th> : false}
         </tr>
       </thead>
     );
@@ -23,14 +27,28 @@ const Table = (props: TableProps) => {
   const renderActions = (client: Client) => {
     return (
       <td className="flex justify-center space-x-2">
-        <button className="flex items-center px-3 py-2 text-sm text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition duration-150">
-          {EditIcon}
-          <span className="ml-1">Editar</span>
-        </button>
-        <button className="flex items-center px-3 py-2 text-red-700 bg-red-100 rounded hover:bg-red-200 transition duration-150">
-          {DeleteIcon}
-          <span className="ml-1">Excluir</span>
-        </button>
+        {props.SelectedClient ? (
+          <button
+            onClick={() => props.SelectedClient?.(client)}
+            className="flex items-center px-3 py-2 text-sm text-blue-700 bg-blue-100 rounded hover:bg-blue-200 transition duration-150"
+          >
+            {EditIcon}
+            <span className="ml-1">Editar</span>
+          </button>
+        ) : (
+          false
+        )}
+        {props.DeletedClient ? (
+          <button
+            onClick={() => props.DeletedClient?.(client)}
+            className="flex items-center px-3 py-2 text-red-700 bg-red-100 rounded hover:bg-red-200 transition duration-150"
+          >
+            {DeleteIcon}
+            <span className="ml-1">Excluir</span>
+          </button>
+        ) : (
+          false
+        )}
       </td>
     );
   };
@@ -52,7 +70,7 @@ const Table = (props: TableProps) => {
             <td className="border-b border-gray-200 px-6 py-4">
               {client.getAge}
             </td>
-            {renderActions(client)}
+            {ShowActions ? renderActions(client) : false}
           </tr>
         ))}
       </tbody>

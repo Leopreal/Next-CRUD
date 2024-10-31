@@ -14,7 +14,8 @@ export default function Home() {
   ];
 
   const SelectedClient = (client: Client) => {
-    console.log(client.getName);
+    setClient(client);
+    setVisible("form");
   };
 
   const DeletedClient = (client: Client) => {
@@ -23,8 +24,15 @@ export default function Home() {
 
   const saveClient = (client: Client) => {
     console.log(client);
+    setVisible("table");
   };
 
+  const newClient = () => {
+    setClient(Client.empty());
+    setVisible("form");
+  };
+
+  const [client, setClient] = useState<Client>(Client.empty());
   const [visible, setVisible] = useState<"table" | "form">("table");
 
   return (
@@ -32,7 +40,7 @@ export default function Home() {
       <Layout title="Cadastro">
         {visible === "table" ? (
           <>
-            <Button color="green" onClick={() => setVisible("form")}>
+            <Button color="green" onClick={newClient}>
               Adicionar
             </Button>
             <Table
@@ -43,7 +51,7 @@ export default function Home() {
           </>
         ) : (
           <FormAdd
-            client={clients[0]}
+            client={client}
             changeClient={saveClient}
             canceled={() => setVisible("table")}
           />

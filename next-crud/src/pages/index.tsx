@@ -1,17 +1,29 @@
+import CollectionClient from "@/backend/db/CollectionClient";
 import Button from "@/components/Button";
 import FormAdd from "@/components/FormAdd";
 import Layout from "@/components/Layout";
 import Table from "@/components/Table";
 import Client from "@/core/Clients";
-import { useState } from "react";
+import RepoClient from "@/core/RepoClient";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const clients = [
-    new Client("leo", 30, "1"),
-    new Client("lucas", 10, "2"),
-    new Client("mateus", 20, "3"),
-    new Client("natan", 30, "4"),
-  ];
+  const repo: RepoClient = new CollectionClient();
+
+  const [client, setClient] = useState<Client>(Client.empty());
+  const [clients, setClients] = useState<Client[]>([]);
+  const [visible, setVisible] = useState<"table" | "form">("table");
+
+  useEffect(() => {
+    getAll();
+  }, []);
+
+  const getAll = () => {
+    repo.all().then((clients) => {
+      setClients(clients);
+      setVisible("table");
+    });
+  };
 
   const SelectedClient = (client: Client) => {
     setClient(client);
@@ -22,18 +34,15 @@ export default function Home() {
     console.log(client.getName);
   };
 
-  const saveClient = (client: Client) => {
-    console.log(client);
-    setVisible("table");
-  };
+  async function saveClient(client: Client) {
+    await repo.save(client);
+    getAll()
+  }
 
   const newClient = () => {
     setClient(Client.empty());
     setVisible("form");
   };
-
-  const [client, setClient] = useState<Client>(Client.empty());
-  const [visible, setVisible] = useState<"table" | "form">("table");
 
   return (
     <div className={`flex h-screen justify-center items-center`}>

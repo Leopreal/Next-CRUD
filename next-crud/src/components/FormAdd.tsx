@@ -10,7 +10,7 @@ interface FormProps {
 }
 
 const FormAdd = (props: FormProps) => {
-  const id = props.client?.getId && null;
+  const id = props.client?.getId;
   const [name, setName] = useState(props.client?.getName ?? "");
   const [age, setAge] = useState(props.client?.getAge ?? 0);
 
@@ -21,7 +21,7 @@ const FormAdd = (props: FormProps) => {
       <Input text="Idade" typer="number" value={age} changeValue={setAge} />
       <div>
         <Button
-          onClick={() => props.changeClient?.(new Client(name, +age))}
+          onClick={() => props.changeClient?.(new Client(name, +age, id))}
           color="blue"
         >
           {id ? "Alterar" : "Salvar"}
